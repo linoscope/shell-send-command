@@ -1,4 +1,4 @@
-;; Run command in *shell* buffer. Unlike "M-x compile", we can see the compile messages in the *shell* buffer.
+;; Run command in *shell* buffer from current buffer.
 ;; http://stackoverflow.com/questions/6286579/emacs-shell-mode-how-to-send-region-to-shell
 (defun shell-send-command (command display_command)
   "Send and run command in shell buffer
