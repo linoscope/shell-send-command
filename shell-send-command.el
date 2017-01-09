@@ -1,9 +1,9 @@
 ;; Run command in *shell* buffer. Unlike "M-x compile", we can see the compile messages in the *shell* buffer.
-;; 1. Start *shell* if it is not running
-;; 2. run "cd path/to/current-buffer" in *shell*
-;; 3. run "make" in *shell*
 ;; http://stackoverflow.com/questions/6286579/emacs-shell-mode-how-to-send-region-to-shell
+
 (defun shell-send-command (command display_command)
+  "Send and run command in shell buffer
+   If you set display_command argument to true, it prints the command in the shell buffer"
   (setq shproc (get-process "shell"))
 
   ;; Start *shell* if it is not running
@@ -59,7 +59,7 @@
 
 (defun shell-send-cd ()
     (interactive ())
-    (shell-send-cd-curdir nil))
+    (shell-send-cd-curdir t))
 
 (defun shell-send-cd-make ()
   (interactive ())
