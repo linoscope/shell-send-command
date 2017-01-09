@@ -1,4 +1,4 @@
-SH-SEND-COMMAND
+SHELL-SEND-COMMAND
 ====
 
 ## Description
