@@ -23,7 +23,6 @@
       (goto-char (process-mark shproc))
       (insert cmd_n)
       (move-marker (process-mark shproc) (point))
-      (insert "hoge")
       ))
 
   (process-send-string  shproc cmd_n ) ;run command
