@@ -1,6 +1,5 @@
 ;; Run command in *shell* buffer. Unlike "M-x compile", we can see the compile messages in the *shell* buffer.
 ;; http://stackoverflow.com/questions/6286579/emacs-shell-mode-how-to-send-region-to-shell
-
 (defun shell-send-command (command display_command)
   "Send and run command in shell buffer
    If you set display_command argument to true, it prints the command in the shell buffer"
@@ -24,21 +23,12 @@
       (goto-char (process-mark shproc))
       (insert cmd_n)
       (move-marker (process-mark shproc) (point))
+      (insert "hoge")
       ))
 
   (process-send-string  shproc cmd_n ) ;run command
 
-  (with-current-buffer shbuff
-    ;; Resync the buffer's idea of the current directory stack
-    ;; For some reason, sync only happens when I do it twice...
-    (shell-resync-dirs)
-    (shell-resync-dirs))
-
   (display-buffer (process-buffer shproc)))
-
-
-(defun shell-send-make (display_command)
-  (shell-send-command "make" display_command))
 
 (defun shell-send-cd-curdir (display_command)
   ;; get directory of buffer
@@ -55,14 +45,21 @@
      (rm_last (split-string file_path "/"))
      "" ))
 
-  (shell-send-command (concat "cd " (current-dir-path)) display_command))
+    (shell-send-command (concat "cd " (current-dir-path)) display_command)
+
+  ;; Resync the buffer's idea of the current directory stack
+  (setq shproc (get-process "shell"))
+  (setq shbuff (process-buffer shproc))
+  (with-current-buffer shbuff
+    ;; For some reason, sync only happens when I do it twice...
+    (shell-resync-dirs)
+    (shell-resync-dirs))
+  )
 
 (defun shell-send-cd ()
     (interactive ())
     (shell-send-cd-curdir t))
 
-(defun shell-send-cd-make ()
+(defun shell-send-make ()
   (interactive ())
-  (shell-send-cd-curdir nil) ; run cd command without showing the string "cd " in *shell*
-  (sit-for 0.001);; makes display better
-  (shell-send-make t))
+  (shell-send-command "make" t))
