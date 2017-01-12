@@ -20,8 +20,7 @@
   (with-current-buffer shbuff
                        (goto-char (process-mark shproc))
                        (insert cmd_n)
-                       (move-marker (process-mark shproc) (point))
-                       )
+                       (move-marker (process-mark shproc) (point)))
 
   (process-send-string  shproc cmd_n ) ;run command
 
