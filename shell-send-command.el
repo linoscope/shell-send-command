@@ -59,4 +59,8 @@
 
 (defun shell-send-make ()
   (interactive ())
-  (shell-send-command "make" t))
+  (shell-send-command "make"))
+
+(defun shell-send-command-interactive (command)
+  (interactive "sCommand:")
+  (shell-send-command command))
