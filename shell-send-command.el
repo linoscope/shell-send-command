@@ -41,9 +41,10 @@
      (rm_last (split-string file_path "/"))
      "" ))
 
-    (shell-send-command (concat "cd " (current-dir-path)))
+  (shell-send-command (concat "cd " (current-dir-path)))
 
   ;; Resync the buffer's idea of the current directory stack
+  ;; Completion in *shell* will not work without this.
   (setq shproc (get-process "shell"))
   (setq shbuff (process-buffer shproc))
   (with-current-buffer shbuff
