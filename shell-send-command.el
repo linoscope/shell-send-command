@@ -1,8 +1,7 @@
 ;; Run command in *shell* buffer from current buffer.
 ;; http://stackoverflow.com/questions/6286579/emacs-shell-mode-how-to-send-region-to-shell
-(defun shell-send-command (command display_command)
-  "Send and run command in shell buffer
-   If you set display_command argument to true, it prints the command in the shell buffer"
+(defun shell-send-command (command)
+  "Send and run command in shell buffer"
   (setq shproc (get-process "shell"))
 
   ;; Start *shell* if it is not running
@@ -18,18 +17,17 @@
   (setq cmd_n (concat command "\n"))
 
   ;; Send string of command for sake of display
-  (when display_command
-    (with-current-buffer shbuff
-      (goto-char (process-mark shproc))
-      (insert cmd_n)
-      (move-marker (process-mark shproc) (point))
-      ))
+  (with-current-buffer shbuff
+                       (goto-char (process-mark shproc))
+                       (insert cmd_n)
+                       (move-marker (process-mark shproc) (point))
+                       )
 
   (process-send-string  shproc cmd_n ) ;run command
 
   (display-buffer (process-buffer shproc)))
 
-(defun shell-send-cd-curdir (display_command)
+(defun shell-send-cd-curdir ()
   ;; get directory of buffer
   (defun current-dir-path ()
     (defun rm_last (l)
@@ -44,7 +42,7 @@
      (rm_last (split-string file_path "/"))
      "" ))
 
-    (shell-send-command (concat "cd " (current-dir-path)) display_command)
+    (shell-send-command (concat "cd " (current-dir-path)))
 
   ;; Resync the buffer's idea of the current directory stack
   (setq shproc (get-process "shell"))
@@ -57,7 +55,7 @@
 
 (defun shell-send-cd ()
     (interactive ())
-    (shell-send-cd-curdir t))
+    (shell-send-cd-curdir))
 
 (defun shell-send-make ()
   (interactive ())
